@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+
+  adminer:
+    image: adminer
+    restart: always
+    expose:
+      - 8080
+    networks:
+      - default
+      - web
+    labels:
+      - traefik.http.routers.adminer.rule=Host(`yourdomainaccess`)
+      - traefik.http.routers.adminer.tls=true
+      - traefik.http.routers.adminer.tls.certresolver=lets-encrypt
+
+  db:
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    networks:
+     - default
+networks:
+  web:
+   external: true
